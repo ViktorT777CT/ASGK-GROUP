@@ -2,12 +2,13 @@
   <form [formGroup]="authorizationForm" (ngSubmit)="submitAuthorization()" >
     <div class="m-3">
       <input
-        formControlName="name"
+        formControlName="login"
       type="text"
       id="typeName"
-      placeholder="name"
+      placeholder="login"
+        [(ngModel)]="login"
       >
-      <p *ngIf="this.authorizationForm.get('name')?.invalid && this.authorizationForm.get('name')?.touched">Name is required</p>
+      <p *ngIf="this.authorizationForm.get('login')?.invalid && this.authorizationForm.get('login')?.touched">Name is required</p>
     </div>
     <div class="m-3">
       <input
@@ -15,12 +16,17 @@
         type="password"
         id="typePassword"
         placeholder="password"
+        [(ngModel)]="password"
       >
       <p *ngIf="this.authorizationForm.get('password')?.invalid && this.authorizationForm.get('password')?.touched">Password is required</p>
     </div>
     <div class="d-flex justify-content-center">
-      <button [disabled]="authorizationForm.invalid"  class="btn rounded-3 bg-danger w-50 text-white fw-bold">login</button>
+      <button (click)="buttonEnter()" [disabled]="authorizationForm.invalid"  class="btn rounded-3 bg-danger w-50 text-white fw-bold">login</button>
     </div>
+    <div *ngIf="response">
+      <p>{{response.auth_token}}</p>
+    </div>
+
 
   </form>
 
