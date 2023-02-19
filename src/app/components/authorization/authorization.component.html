@@ -1,3 +1,4 @@
+<h2 class="text-center">{{ title }}</h2>
 <div class=" d-flex justify-content-center">
   <form [formGroup]="authorizationForm" (ngSubmit)="submitAuthorization()" >
     <div class="m-3">
@@ -23,12 +24,6 @@
     <div class="d-flex justify-content-center">
       <button (click)="buttonEnter()" [disabled]="authorizationForm.invalid"  class="btn rounded-3 bg-danger w-50 text-white fw-bold">login</button>
     </div>
-    <div *ngIf="response">
-      <p>{{response.auth_token}}</p>
-    </div>
-
-
   </form>
-
 </div>
 

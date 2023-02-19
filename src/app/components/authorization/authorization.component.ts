@@ -8,15 +8,17 @@ import {HttpClient} from "@angular/common/http";
   templateUrl: './authorization.component.html'
 })
 export class AuthorizationComponent implements OnInit{
+  title = 'Login';
 
   login: string = '';
   password: string = '';
-  response: any;
+  public response: any;
   constructor(
     private http: HttpClient,
     private router: Router,
     private authService: AuthService) {
   }
+
   buttonEnter(){
     this.http.post('https://api.asgk-group.ru/test-auth-only', {login:'test', password:'test'})
       .subscribe((response) =>  {
@@ -40,4 +42,6 @@ export class AuthorizationComponent implements OnInit{
    'password': new FormControl(null, Validators.required)
  })
   }
+
+
 }

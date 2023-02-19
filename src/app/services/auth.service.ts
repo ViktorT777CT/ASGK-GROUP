@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Router} from "@angular/router";
 import {Observable, of, throwError} from "rxjs";
+import {AuthorizationComponent} from "../components/authorization/authorization.component";
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class AuthService {
   isLoggedIn(){
     return this.getToken() !== null;
   }
-  login(userInfo:{name: string, password: string}): Observable<string | boolean>{
-    if (userInfo.name !== '' && userInfo.password !== '' ){
+  login(userInfo:{response: string}): Observable<string | boolean>{
+    if (userInfo.response = 'auth_token'){
       this.setToken('token')
       return of(true)
     }
