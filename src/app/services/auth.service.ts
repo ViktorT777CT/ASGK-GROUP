@@ -20,7 +20,7 @@ export class AuthService {
     return this.getToken() !== null;
   }
   login(userInfo:{response: string}): Observable<string | boolean>{
-    if (userInfo.response = 'auth_token'){
+    if (this.getToken()){
       this.setToken('token')
       return of(true)
     }

@@ -24,6 +24,7 @@ export class AuthorizationComponent implements OnInit{
       .subscribe((response) =>  {
         this.response = response;
         console.log(this.response);
+        localStorage.setItem('token', this.response.auth_token);
       })
   }
 
