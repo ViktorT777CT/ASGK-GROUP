@@ -1,28 +1,63 @@
 <div class="row flex-column">
   <div class="col-12">
-    <div class="table-responsive">
-      <table class="table table-dark table-hover">
-        <thead>
-        <tr>
-          <th>Уникальный id карты</th>
-          <th>Наименование макета карты</th>
-          <th>ФИО владельца карты</th>
-          <th>Номер телефона</th>
-          <th>E-mail</th>
-          <th>Дата рождения</th>
-          <th>Пол</th>
-          <th>Номер автомобиля</th>
-          <th>Скидка</th>
-          <th>Бонусы</th>
-        </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of users; let i=index">
-            <td>{{data.user_id}}</td>
-            <td>{{data.title}}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div *ngIf="token && apiKey" class="table-responsive">
+      <form [formGroup]="authorizationForm" (ngSubmit)="submitAuthorization()">
+        <table class="table table-dark table-hover">
+          <thead>
+            <tr class="bg-dark">
+              <th><input [(ngModel)]="user_id" class="form-control" name="user_id" /></th>
+              <th><input [(ngModel)]="template" class="form-control" name="template" /></th>
+              <th><input class="form-control" name="fio" /></th>
+              <th><input class="form-control" name="first_name" /></th>
+              <th><input class="form-control" name="last_name" /></th>
+              <th><input class="form-control" name="pat_name" /></th>
+              <th><input class="form-control" name="phone" /></th>
+              <th><input class="form-control" name="email" /></th>
+              <th><input class="form-control" name="birthday" /></th>
+              <th><input class="form-control" name="loyalty_level" /></th>
+            </tr>
+            <tr>
+              <th>user_id</th>
+              <th>template</th>
+              <th>fio</th>
+              <th>first_name</th>
+              <th>last_name</th>
+              <th>pat_name</th>
+              <th>phone</th>
+              <th>email</th>
+              <th>birthday</th>
+              <th>loyalty_level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of users; let i=index">
+              <td>{{data.user_id}}</td>
+              <td>{{data.template}}</td>
+              <td>{{data.fio}}</td>
+              <td>{{data.first_name}}</td>
+              <td>{{data.last_name}}</td>
+              <td>{{data.pat_name}}</td>
+              <td>{{data.phone}}</td>
+              <td>{{data.email}}</td>
+              <td>{{data.birthday}}</td>
+              <td>{{data.loyalty_level}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="8">
+                тут бы добавить пагинашку
+              </td>
+              <td colspan="2"><button class="btn w-100 btn-primary" type="submit">Поиск</button></td>
+            </tr>
+          </tfoot>
+        </table>
+      </form>
+    </div>
+    <div *ngIf="!token || !apiKey">
+      <div class="alert alert-danger" role="alert">
+        Вы не авторизованы!
+      </div>
     </div>
   </div>
 </div>

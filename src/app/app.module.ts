@@ -9,6 +9,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./services/auth.service";
+import {StoreModule} from "@ngrx/store";
+import {tokenReducer} from "./story/token.reducer";
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import {AuthService} from "./services/auth.service";
         NgbModule,
         ReactiveFormsModule,
         HttpClientModule,
-        FormsModule
+        FormsModule,
+        StoreModule.forRoot({token: tokenReducer})
     ],
   providers: [AuthService],
   bootstrap: [AppComponent]

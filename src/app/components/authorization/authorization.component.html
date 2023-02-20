@@ -24,7 +24,7 @@
       <p class="text-danger" *ngIf="this.authorizationForm.get('password')?.invalid && this.authorizationForm.get('password')?.touched">Password is required</p>
     </div>
     <div class="d-flex justify-content-center">
-      <button (click)="buttonEnter()" [disabled]="authorizationForm.invalid"  class="btn rounded-3 bg-danger w-50 text-white fw-bold">login</button>
+      <button [disabled]="authorizationForm.invalid"  class="btn rounded-3 bg-danger w-50 text-white fw-bold">login</button>
     </div>
   </form>
 </div>

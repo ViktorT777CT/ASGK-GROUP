@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IHome} from "./models/home";
-import {home as data} from './data/home'
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {AuthService} from "../../../../services/auth.service";
+import {Store} from "@ngrx/store";
+import {selectTokenApiKey, selectTokenValue} from "../../../../story/selectors";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-home',
@@ -12,35 +12,58 @@ import {AuthService} from "../../../../services/auth.service";
 })
 export class HomeComponent implements OnInit {
 
-  users: IHome[] = [{user_id: 5, title: 'test'}];
+  users: IHome[] = [];
+  token: string;
+  apiKey: string;
 
   constructor(
     private http: HttpClient,
+    private store: Store<{ token: string }>,
   ) {}
 
   // ngOnInit в этих методах можно выполнить код когда загружается компонент
   ngOnInit(): void {
+    // получаем токен из хранилища
+    this.store.select(selectTokenValue).subscribe((r) => this.token = r);
 
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Authorization', '9f6befe40b796f854ef7f8ceed08869d');
+    // получаем Апи ключ
+    this.store.select(selectTokenApiKey).subscribe((r) => this.apiKey = r);
 
-    const body = {
-      token: '9f6befe40b796f854ef7f8ceed08869d',
-      search: 'first_name=Иван,last_name=Иванов',
-      limit: 50,
-      offset: 0,
-    };
+    if (this.token && this.apiKey) {
 
-    let params = new HttpParams({fromObject: body});
+      const headers = new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', this.apiKey);
 
-    this.http.request('GET', 'https://api.asgk-group.ru/v1/9f6befe40b796f854ef7f8ceed08869d/passes?', {
-      responseType:'json',
-      headers,
-      params,
-    }).subscribe((response) => {
-      this.users = data;
-      console.log(response);
-    });
+      const body = {
+        token: this.token,
+        search: '', // тут фильтруешь как тебе надо 'first_name=Иван'
+        limit: 50,
+        offset: 0,
+      };
+
+      let params = new HttpParams({fromObject: body});
+
+      this.http.request('GET', 'https://api.asgk-group.ru/v1/' + this.token + '/passes?', {
+        responseType:'json',
+        headers,
+        params,
+      }).subscribe((response) => {
+        // @ts-ignore
+        this.users = response.passes;
+      });
+    }
+
+    this.authorizationForm = new FormGroup({
+      'user_id': new FormControl(null),
+    })
+  }
+
+  authorizationForm!: FormGroup
+  user_id: any;
+  template: any;
+
+  submitAuthorization(){
+    console.log(this.authorizationForm.value);
   }
 }
