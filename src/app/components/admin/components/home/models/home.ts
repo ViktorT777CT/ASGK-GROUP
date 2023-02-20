@@ -1,4 +1,4 @@
 export interface IHome{
-  id: number
+  user_id: number
   title: string
 }
