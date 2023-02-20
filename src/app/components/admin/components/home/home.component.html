@@ -1,62 +1,72 @@
-<div class="row flex-column">
-  <div class="col-12">
-    <div *ngIf="token && apiKey" class="table-responsive">
-      <form [formGroup]="authorizationForm" (ngSubmit)="submitAuthorization()">
-        <table class="table table-dark table-hover">
-          <thead>
-            <tr class="bg-dark">
-              <th><input [(ngModel)]="user_id" class="form-control" name="user_id" /></th>
-              <th><input [(ngModel)]="template" class="form-control" name="template" /></th>
-              <th><input class="form-control" name="fio" /></th>
-              <th><input class="form-control" name="first_name" /></th>
-              <th><input class="form-control" name="last_name" /></th>
-              <th><input class="form-control" name="pat_name" /></th>
-              <th><input class="form-control" name="phone" /></th>
-              <th><input class="form-control" name="email" /></th>
-              <th><input class="form-control" name="birthday" /></th>
-              <th><input class="form-control" name="loyalty_level" /></th>
-            </tr>
-            <tr>
-              <th>user_id</th>
-              <th>template</th>
-              <th>fio</th>
-              <th>first_name</th>
-              <th>last_name</th>
-              <th>pat_name</th>
-              <th>phone</th>
-              <th>email</th>
-              <th>birthday</th>
-              <th>loyalty_level</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of users; let i=index">
-              <td>{{data.user_id}}</td>
-              <td>{{data.template}}</td>
-              <td>{{data.fio}}</td>
-              <td>{{data.first_name}}</td>
-              <td>{{data.last_name}}</td>
-              <td>{{data.pat_name}}</td>
-              <td>{{data.phone}}</td>
-              <td>{{data.email}}</td>
-              <td>{{data.birthday}}</td>
-              <td>{{data.loyalty_level}}</td>
-            </tr>
-          </tbody>
-          <tfoot>
+<div class="container-fluid">
+  <div class="row flex-column">
+    <div class="col-12">
+      <div *ngIf="token && apiKey" class="table-responsive">
+        <form [formGroup]="authorizationForm" (ngSubmit)="submitAuthorization()">
+          <table class="table table-dark table-hover">
+            <thead>
+              <tr class="bg-dark">
+                <th><input formControlName="user_id" class="form-control" /></th>
+                <th><input formControlName="template" class="form-control" /></th>
+                <th><input formControlName="fio" class="form-control" name="fio" /></th>
+                <th><input formControlName="first_name" class="form-control" name="first_name" /></th>
+                <th><input formControlName="last_name" class="form-control" name="last_name" /></th>
+                <th><input formControlName="pat_name" class="form-control" name="pat_name" /></th>
+                <th><input formControlName="phone" class="form-control" name="phone" /></th>
+                <th><input formControlName="email" class="form-control" name="email" /></th>
+                <th><input formControlName="birthday" class="form-control" name="birthday" /></th>
+                <th><input formControlName="loyalty_level" class="form-control" name="loyalty_level" /></th>
+              </tr>
+              <tr>
+                <th>user_id</th>
+                <th>template</th>
+                <th>fio</th>
+                <th>first_name</th>
+                <th>last_name</th>
+                <th>pat_name</th>
+                <th>phone</th>
+                <th>email</th>
+                <th>birthday</th>
+                <th>loyalty_level</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of users; let i=index">
+                <td>{{data.user_id}}</td>
+                <td>{{data.template}}</td>
+                <td>{{data.fio}}</td>
+                <td>{{data.first_name}}</td>
+                <td>{{data.last_name}}</td>
+                <td>{{data.pat_name}}</td>
+                <td>{{data.phone}}</td>
+                <td>{{data.email}}</td>
+                <td>{{data.birthday}}</td>
+                <td>{{data.loyalty_level}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
             <tr>
               <td colspan="8">
-                тут бы добавить пагинашку
+                <nav>
+                  <ul class="pagination pagination-sm">
+                    <li class="page-item active" aria-current="page">
+                      <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  </ul>
+                </nav>
               </td>
               <td colspan="2"><button class="btn w-100 btn-primary" type="submit">Поиск</button></td>
-            </tr>
-          </tfoot>
-        </table>
-      </form>
-    </div>
-    <div *ngIf="!token || !apiKey">
-      <div class="alert alert-danger" role="alert">
-        Вы не авторизованы!
+              </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+      <div *ngIf="!token || !apiKey">
+        <div class="alert alert-danger" role="alert">
+          Вы не авторизованы!
+        </div>
       </div>
     </div>
   </div>
