@@ -5,6 +5,12 @@ import {Store} from "@ngrx/store";
 import {selectTokenApiKey, selectTokenValue} from "../../../../story/selectors";
 import {FormControl, FormGroup} from "@angular/forms";
 
+export type GetDataType = {
+  search: string, // тут фильтруешь как тебе надо 'first_name=Иван'
+  limit: number,
+  offset: number,
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -21,6 +27,26 @@ export class HomeComponent implements OnInit {
     private store: Store<{ token: string }>,
   ) {}
 
+  // получаем список
+  getData(body: GetDataType): void{
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', this.apiKey);
+
+    const bodyParams = Object.assign(body, {token: this.token});
+
+    let params = new HttpParams({fromObject: bodyParams});
+
+    this.http.request('GET', 'https://api.asgk-group.ru/v1/' + this.token + '/passes?', {
+      responseType:'json',
+      headers,
+      params,
+    }).subscribe((response) => {
+      // @ts-ignore
+      this.users = response.passes;
+    });
+  }
+
   // ngOnInit в этих методах можно выполнить код когда загружается компонент
   ngOnInit(): void {
     // получаем токен из хранилища
@@ -30,40 +56,30 @@ export class HomeComponent implements OnInit {
     this.store.select(selectTokenApiKey).subscribe((r) => this.apiKey = r);
 
     if (this.token && this.apiKey) {
-
-      const headers = new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', this.apiKey);
-
-      const body = {
-        token: this.token,
-        search: '', // тут фильтруешь как тебе надо 'first_name=Иван'
-        limit: 50,
-        offset: 0,
-      };
-
-      let params = new HttpParams({fromObject: body});
-
-      this.http.request('GET', 'https://api.asgk-group.ru/v1/' + this.token + '/passes?', {
-        responseType:'json',
-        headers,
-        params,
-      }).subscribe((response) => {
-        // @ts-ignore
-        this.users = response.passes;
-      });
+       this.getData({search: '', limit: 50, offset: 0});
     }
 
     this.authorizationForm = new FormGroup({
-      'user_id': new FormControl(null),
+      user_id: new FormControl(null),
+      template: new FormControl(null),
+      fio: new FormControl(null),
+      first_name: new FormControl(null),
+      last_name: new FormControl(null),
+      pat_name: new FormControl(null),
+      phone: new FormControl(null),
+      email: new FormControl(null),
+      birthday: new FormControl(null),
+      loyalty_level: new FormControl(null),
     })
   }
 
   authorizationForm!: FormGroup
-  user_id: any;
-  template: any;
 
   submitAuthorization(){
-    console.log(this.authorizationForm.value);
+    const FormValues = this.authorizationForm.value;
+    Object.keys(FormValues).forEach((k) => (FormValues[k] == '' || FormValues[k] == null) && delete FormValues[k]);
+
+    let search = new HttpParams({fromObject: FormValues});
+    this.getData({search: search.toString(), limit: 50, offset: 0});
   }
 }
