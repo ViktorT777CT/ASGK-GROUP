@@ -1,6 +1,19 @@
 <div class="container-fluid">
   <div class="row flex-column">
     <div class="col-12">
+
+      <div *ngIf="userInfo">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+          <button (click)="userInfo=''" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <h4 class="alert-heading">Информация о карте</h4>
+          <p>Информация получена запросом к API.</p>
+          <hr>
+          <p class="mb-0">
+            <code>{{userInfo}}</code>
+          </p>
+        </div>
+      </div>
+
       <div *ngIf="token && apiKey" class="table-responsive">
         <form [formGroup]="authorizationForm" (ngSubmit)="submitAuthorization()">
           <table class="table table-dark table-hover">
@@ -16,6 +29,8 @@
                 <th><input formControlName="email" class="form-control" name="email" /></th>
                 <th><input formControlName="birthday" class="form-control" name="birthday" /></th>
                 <th><input formControlName="loyalty_level" class="form-control" name="loyalty_level" /></th>
+                <th><input formControlName="barcode" class="form-control" name="barcode" /></th>
+                <th></th>
               </tr>
               <tr>
                 <th>user_id</th>
@@ -28,6 +43,8 @@
                 <th>email</th>
                 <th>birthday</th>
                 <th>loyalty_level</th>
+                <th>barcode</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -42,6 +59,12 @@
                 <td>{{data.email}}</td>
                 <td>{{data.birthday}}</td>
                 <td>{{data.loyalty_level}}</td>
+                <td>{{data.barcode}}</td>
+                <td>
+                  <button (click)="getCardInfo(data.barcode)"  class="btn btn-outline-info">
+                    <bi name="People" style="width: 45px; height: 45px"></bi>
+                  </button>
+                </td>
               </tr>
             </tbody>
             <tfoot>
@@ -57,7 +80,7 @@
                   </ul>
                 </nav>
               </td>
-              <td colspan="2"><button class="btn w-100 btn-primary" type="submit">Поиск</button></td>
+              <td colspan="4"><button class="btn w-100 btn-primary" type="submit">Поиск</button></td>
               </tr>
             </tfoot>
           </table>

@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   users: IHome[] = [];
   token: string;
   apiKey: string;
+  userInfo: string;
 
   constructor(
     private http: HttpClient,
@@ -47,6 +48,24 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  getCardInfo(barcode: string) {
+
+    if (this.token && this.apiKey) {
+      const headers = new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', this.apiKey);
+
+      this.http.request('GET', 'https://api.asgk-group.ru/v1/' + this.token + '/passes/barcode/' + barcode, {
+        responseType:'json',
+        headers,
+      }).subscribe((response) => {
+
+        // @ts-ignore
+        this.userInfo = JSON.stringify(response);
+      });
+    }
+  }
+
   // ngOnInit в этих методах можно выполнить код когда загружается компонент
   ngOnInit(): void {
     // получаем токен из хранилища
@@ -70,6 +89,7 @@ export class HomeComponent implements OnInit {
       email: new FormControl(null),
       birthday: new FormControl(null),
       loyalty_level: new FormControl(null),
+      barcode: new FormControl(null),
     })
   }
 
