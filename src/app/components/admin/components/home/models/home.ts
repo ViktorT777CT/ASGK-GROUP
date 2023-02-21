@@ -9,4 +9,5 @@ export interface IHome{
   email: string,
   birthday: string,
   loyalty_level: string,
+  barcode: string,
 }

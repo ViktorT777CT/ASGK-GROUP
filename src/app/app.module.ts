@@ -12,6 +12,7 @@ import {AuthService} from "./services/auth.service";
 import {StoreModule} from "@ngrx/store";
 import {tokenReducer} from "./story/token.reducer";
 import {DatePipe} from "@angular/common";
+import {IconsModule} from "./icons/icons.module";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {DatePipe} from "@angular/common";
         ReactiveFormsModule,
         HttpClientModule,
         FormsModule,
-        StoreModule.forRoot({token: tokenReducer})
+        StoreModule.forRoot({token: tokenReducer}),
+        IconsModule,
     ],
   providers: [AuthService, DatePipe],
   bootstrap: [AppComponent]
