@@ -1,0 +1,42 @@
+<button type="button" (click)="open()" class="btn btn-info rounded-0">Send Push</button>
+<ng-template #modal>
+  <form [formGroup]="pushForm" (ngSubmit)="submitPushForm()">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ modalConfig.modalTitle }}</h5>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="!sendSuccess">
+        <ng-content></ng-content>
+        <textarea formControlName="user_id" class="form-control" rows="5" cols="5"></textarea>
+        <p>Ваше сообщение</p>
+        <textarea formControlName="push_message" class="form-control" rows="5" cols="5"></textarea>
+        <div class="my-2">
+          <label>Дата отправки</label>
+          <input formControlName="date_start" class="form-control" type="text" value="" />
+        </div>
+      </div>
+      <div *ngIf="sendSuccess">
+        <div class="alert alert-success" role="alert">
+          <b>Push успешно отправлен</b>
+          <br/>
+          <code>{{responsePush}}</code>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit"
+              class="btn btn-primary"
+              *ngIf="modalConfig.hideDismissButton === undefined || !modalConfig.hideDismissButton()"
+              [disabled]="modalConfig.disableDismissButton !== undefined && modalConfig.disableDismissButton()">
+        {{ modalConfig.dismissButtonLabel }}
+      </button>
+      <button type="button"
+              class="btn btn-secondary"
+              (click)="close()"
+              *ngIf="modalConfig.hideCloseButton === undefined || !modalConfig.hideCloseButton()"
+              [disabled]="modalConfig.disableCloseButton !== undefined && modalConfig.disableCloseButton()">
+        {{ modalConfig.closeButtonLabel }}
+      </button>
+    </div>
+  </form>
+</ng-template>
