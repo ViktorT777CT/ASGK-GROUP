@@ -79,7 +79,11 @@ export class HomeComponent implements OnInit {
     const FormValues = this.authorizationForm.value;
     Object.keys(FormValues).forEach((k) => (FormValues[k] == '' || FormValues[k] == null) && delete FormValues[k]);
 
-    let search = new HttpParams({fromObject: FormValues});
-    this.getData({search: search.toString(), limit: 50, offset: 0});
+    let search = '';
+    for (const key of Object.keys(FormValues)) {
+      search += (key + '=' + FormValues[key])
+    }
+
+    this.getData({search: search, limit: 50, offset: 0});
   }
 }
